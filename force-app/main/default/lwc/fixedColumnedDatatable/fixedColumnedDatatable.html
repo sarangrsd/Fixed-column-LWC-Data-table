@@ -1,0 +1,17 @@
+<template>
+	<div class="slds-box autoOverflow">
+		<div class="slds-grid containerClass">
+			<div class="slds-col fixedPosition">
+				<lightning-datatable key-field="id" columns={columnFirstTable} data={dataFirstTable} hide-checkbox-column
+                 default-sort-direction={defaultSortDirection}
+				 sorted-direction={sortDirection} sorted-by={sortedBy} onsort={onHandleSort}>
+				</lightning-datatable>
+			</div>
+			<div class="slds-col">
+				<lightning-datatable key-field="id" columns={columnsSecondTable} data={dataSecondTable} hide-checkbox-column default-sort-direction={defaultSortDirection}
+				 sorted-direction={sortDirection} sorted-by={sortedBy} onsort={onHandleSort}>
+				</lightning-datatable>
+			</div>
+		</div>
+	</div>
+</template>

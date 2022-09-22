@@ -1,0 +1,49 @@
+<template>
+    <div class={styleClass}>
+        <template if:true={isConnections}>
+            <p class="quantity">{quantity}</p>
+        </template>
+        <template if:true={isInputFieldVisible}>
+            <input type="number" name={idType} min=1 max={quantity} value={selectedQuantity} class="slds-input" 
+                onkeyup={handleChange} onchange={handleChange}></input>
+        </template>
+
+        <template if:false={isInputFieldVisible}>
+            <p class="height"></p>
+        </template>
+        </div>
+    <!-- <template if:true={isLEVisible}>
+        <template if:true={isInputFieldVisible}>
+            <input type="number" data-type="localexpert" name={id} min=1 max={quantity} value={selectedQuantity} class="slds-input" 
+                onkeyup={handleChange} onchange={handleChange}></input>
+        </template>
+
+        <template if:false={isInputFieldVisible}>
+            <p class="height"></p>
+        </template>
+    </template> -->
+
+    <!-- <template if:true={isConVisible}>
+        <template if:true={isConInputVisible}>
+            <p class="slds-align_absolute-center">{quantity}</p>
+            <input type="number" data-type="connections" name={uniqueMarket} min=1 max={quantity} value={selectedQuantity} class="slds-input connections" 
+                onkeyup={handleChange} onchange={handleChange}></input>
+        </template>
+        <template if:false={isConInputVisible}>
+            <p class="height"></p>
+        </template>
+    </template> -->
+
+    <!--For market Reach product -->
+    <!-- <template if:true={isMRVisible}>
+        <template if:true={isInputFieldVisible}>
+            <input type="number" data-type="marketreach"  name={id} value={selectedQuantity} class="slds-input" 
+             onchange={handleChange}></input>
+        </template>
+
+        <template if:false={isInputFieldVisible}>
+            <p class="height"></p>
+        </template>
+    </template>
+    </div> -->
+</template>

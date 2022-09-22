@@ -1,0 +1,17 @@
+.slds-box{
+    padding:0;
+}
+.fixedPosition{
+    position: sticky;
+    z-index: 10;
+    left:0;
+}
+.autoOverflow{
+    overflow:auto;
+}
+.containerClass{
+    display:inline-flex;
+}
+.minimumHeight{
+    min-height: 4rem;
+}

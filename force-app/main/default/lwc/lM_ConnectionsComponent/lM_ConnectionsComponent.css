@@ -1,0 +1,152 @@
+.search{
+    width: 13rem; 
+}
+
+.slds-form-element__legend{
+    font-size :12px;
+}
+ 
+.expand{
+    width:auto;
+    font-weight:400;
+    margin-left: 20px;
+}
+ 
+.showAll{
+    font-weight: 400;
+}
+ 
+ 
+.datatable{
+    height:var(--heightConnections);
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+ 
+.slds-box{
+    padding: 0px;
+}
+
+.market-type{
+    width: 20px; 
+    height: 20px; 
+    float: left;
+}
+
+.datatable-utility{
+    width:4rem;
+    margin-top:.3rem;
+   
+}
+
+.page-navigator{
+    padding-top: .35rem;
+}
+
+.modalClasses{
+    width: 72.6%;
+    margin-left : 26%;
+}
+ 
+.slds-modal__content{
+    height:100%;    
+    overflow-y:auto;
+    overflow-x: hidden;
+}
+ 
+.modalTable{
+    width:100%;
+    height:auto;
+    overflow-y:auto;
+    overflow-x:hidden;
+    position : relative;
+}
+
+.protectedPadding{
+    padding-top:.73rem;
+}
+
+.searchModal{
+    width:105px;
+}
+
+.buttonAlignment{
+    margin-left: 0px;
+}
+
+.slds-form-element__label{
+    font-size: .7rem;
+}
+
+.ROITable{
+    width:fit-content;
+
+} 
+
+.ROIHeader{
+    font-weight: bold;
+    font-size: .8rem;
+}
+
+.saveButtonMargin{
+    margin: 20px;
+}
+
+.searchLabel{
+    float:left;
+}
+
+.roiInputs{
+    width:65px;
+}
+
+.roi{
+    
+    padding-bottom: .5rem;
+}
+
+.modalBody {
+    position: relative;
+    height:100%;    
+    overflow-y:hidden;
+    overflow-x: hidden;
+
+}
+
+.qq_modal{
+    display: var(--display);
+}
+
+.modalSize{
+    font-size: .7rem;
+}
+
+.fixedPosition{
+    position: sticky;
+    z-index: 10;
+    left:0;
+}
+.autoOverflow{
+    display : inline
+}
+.containerClass{
+    display:inline-flex;
+}
+
+.overflowModal{
+    overflow-x: auto;
+    border-width: thin;
+    border-style: ridge;
+    border-color: lightgray;
+}
+
+.ratesheader{
+    /* padding:0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0; */
+    background-color: white;
+}
+
+/* .footerBorder{
+    border-top-style: none;
+} */

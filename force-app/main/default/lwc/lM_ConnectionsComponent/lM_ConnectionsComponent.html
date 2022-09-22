@@ -1,0 +1,567 @@
+<template>
+        <template if:true={showSpinner}>
+                <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+        </template>
+        <template if:false={skipAccount360}>
+        <template if:true={dataCheck}>
+                <lightning-card>
+                        <div>
+                                <lightning-layout horizontal-align="spread">
+                                        <lightning-layout-item class="slds-var-p-vertical_small">
+                                                <lightning-button class="showAll" variant="brand"
+                                                        label={showFullDetailLabel} onclick={handleShowAll}>
+                                                </lightning-button>
+                                                <lightning-button variant={showCBCVariant} name="Expand"
+                                                        label={buttonLabel} title={buttonLabel} class="expand"
+                                                        onclick={handleAllCBC}>
+                                                </lightning-button>
+                                                <lightning-button variant="brand" name={quickQuoteButtonLabel}
+                                                        value={quickQuoteButtonLabel} label={quickQuoteButtonLabel}
+                                                        title="quick" onclick={openQuickQuote} class="expand">
+                                                </lightning-button>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="slds-var-p-vertical_small">
+                                                <legend class="slds-form-element__legend slds-form-element__label">
+                                                        {searchLabel}</legend>
+                                                <lightning-input name="Search" type="text" variant="label-inline"
+                                                        class="search" onchange={handleSearch} value={searchValue}>
+                                                </lightning-input>
+                                        </lightning-layout-item>
+                                </lightning-layout>
+                                <lightning-layout horizontal-align="spread">
+                                        <lightning-layout>
+                                                <lightning-layout-item
+                                                        class="slds-var-p-right_small slds-p-top_small">
+                                                        <label class="datatable-utility">
+                                                                Show </label>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                        <lightning-combobox
+                                                                class="datatable-utility datatable-utility-input"
+                                                                name="product" variant="label-hidden"
+                                                                value={noOfRowsValue} options={noOfRowsValueArray}
+                                                                onchange={handleRowNumChange}>
+                                                        </lightning-combobox>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item padding="around-small" class="buttonAlignment">
+                                                        <label class="datatable-utility">
+                                                                entries </label>
+                                                </lightning-layout-item>
+                                        </lightning-layout>
+                                        <lightning-layout-item class="slds-var-p-vertical_small">
+                                                <div class="market-type protected"></div>
+                                                <span class="slds-var-p-left_x-small">{protectedMarketLabel}</span>
+                                        </lightning-layout-item>
+                                </lightning-layout>
+                        </div>
+                        <div>
+                                <div class="datatable slds-box">
+                                        <c-l-m_-local-expert-custom-table key-field="id" data={data}
+                                                columns={columnData} class="datatable-colors datatable-fixed-column"
+                                                onquantityupdate={handleQuantityUpdate} min-column-width="100"
+                                                wrap-text-max-lines="5" hide-checkbox-column onsort={handleSort}
+                                                sorted-direction={sortDirection} sorted-by={sortBy}>
+                                        </c-l-m_-local-expert-custom-table>
+
+                                </div>
+                        </div>
+                        <lightning-layout horizontal-align="spread">
+                                <lightning-layout-item class="slds-var-p-vertical_small">
+                                        <div class="slds-float_left slds-var-p-top_small page-details">Showing
+                                                {firstRecordIndex} to
+                                                {lastRecordIndex} of {totalRecord} entries</div>
+                                </lightning-layout-item>
+                                <lightning-layout-item class="slds-var-p-vertical_small">
+                                        <div class="slds-button-group-row page-navigator">
+                                                <lightning-button-icon icon-name="utility:left" variant="border-filled"
+                                                        alternative-text="First" class="slds-var-m-left_xx-small"
+                                                        title="First" onclick={handleFirst} disabled={isFirstRecord}>
+                                                </lightning-button-icon>
+                                                <lightning-button-icon icon-name="utility:chevronleft"
+                                                        variant="border-filled" alternative-text="Previous"
+                                                        class="slds-var-m-left_xx-small" title="Previous"
+                                                        onclick={handlePrevious} disabled={isFirstRecord}>
+                                                </lightning-button-icon>
+                                                <lightning-button variant="base" label="Previous" title="Previous"
+                                                        onclick={handlePrevious} class="slds-var-m-left_x-small"
+                                                        disabled={isFirstRecord}></lightning-button>
+                                                <lightning-button variant="base" label="Next" title="Next"
+                                                        onclick={handleNext} class="slds-var-m-left_x-small"
+                                                        disabled={isLastRecord}></lightning-button>
+                                                <lightning-button-icon icon-name="utility:chevronright"
+                                                        variant="border-filled" alternative-text="Next"
+                                                        class="slds-var-m-left_xx-small" title="Next"
+                                                        onclick={handleNext} disabled={isLastRecord}>
+                                                </lightning-button-icon>
+                                                <lightning-button-icon icon-name="utility:right" variant="border-filled"
+                                                        alternative-text="Last" class="slds-var-m-left_xx-small"
+                                                        title="Last" onclick={handleLast} disabled={isLastRecord}>
+                                                </lightning-button-icon>
+                                        </div>
+                                </lightning-layout-item>
+                        </lightning-layout>
+
+
+                </lightning-card>
+        </template>
+
+        <template if:false={dataCheck}>
+                <div class="slds-align_absolute-center" style="height:3rem">
+                        <lightning-icon icon-name={iconNameNoData} size="x-small"></lightning-icon> &nbsp;
+                        {errorMessage}
+                </div>
+        </template>
+</template>
+
+<template if:true={skipAccount360}>
+        <div class="slds-align_absolute-center" style="height:3rem">
+            <lightning-icon icon-name={iconNameNoData} size="x-small"></lightning-icon> &nbsp; {skipAccount360msg}
+        </div>
+</template>
+
+        <template if:true={displayInModal}>
+                <section role="dialog" tabindex="0" onkeydown={handleKeyDown}
+                        class="slds-modal slds-fade-in-open slds-modal_large outerModalContent modalSectionToFindFocus modalSize"
+                        aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+                        <div class="slds-modal__container modalClasses outerModalContent">
+                                <header class="slds-modal__header">
+                                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                                title="Close" onclick={handleModalClose}>
+                                                <lightning-icon icon-name="utility:close" alternative-text="close"
+                                                        variant="inverse" size="small">
+                                                </lightning-icon>
+                                                <span class="slds-assistive-text">Close</span>
+                                        </button>
+                                        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+                                                {modalHeader}
+                                        </h2>
+                                </header>
+                                <header class="ratesheader">
+                                        <lightning-layout horizontal-align="spread"
+                                                        class="slds-var-p-horizontal_medium">
+                                                        <lightning-layout-item class="slds-var-p-vertical_medium">
+                                                                <lightning-button variant={showCBCVariantForModal}
+                                                                        name="Expand" label={showCBCLabelForModal}
+                                                                        title={buttonLabel} onclick={handleAllCBC}>
+                                                                </lightning-button>
+                                                        </lightning-layout-item>
+
+                                                        <lightning-layout-item class="slds-var-p-vertical_small">
+                                                                <lightning-layout>
+                                                                        <lightning-layout-item>
+                                                                                <lightning-layout>
+                                                                                        <lightning-layout-item
+                                                                                                padding="around-small"
+                                                                                                class="buttonAlignment">
+                                                                                                <label
+                                                                                                        class="slds-var-p-left_small datatable-utility">
+                                                                                                        Show </label>
+                                                                                        </lightning-layout-item>
+                                                                                        <lightning-layout-item>
+                                                                                                <lightning-combobox
+                                                                                                        class="datatable-utility datatable-utility-input"
+                                                                                                        name="product"
+                                                                                                        variant="label-hidden"
+                                                                                                        value={noOfRowsValue}
+                                                                                                        options={noOfRowsValueArray}
+                                                                                                        onchange={handleRowNumChange}>
+                                                                                                </lightning-combobox>
+                                                                                        </lightning-layout-item>
+                                                                                        <lightning-layout-item
+                                                                                                padding="around-small"
+                                                                                                class="buttonAlignment">
+                                                                                                <label
+                                                                                                        class="datatable-utility">
+                                                                                                        entries </label>
+                                                                                        </lightning-layout-item>
+                                                                                </lightning-layout>
+                                                                        </lightning-layout-item>
+
+                                                                        <lightning-layout-item
+                                                                                class="slds-var-p-bottom_small protectedPadding">
+                                                                                <div class="market-type protected">
+                                                                                </div>
+                                                                                <span class="slds-var-p-left_x-small">{protectedMarketLabel}
+                                                                                </span>
+                                                                        </lightning-layout-item>
+                                                                </lightning-layout>
+                                                        </lightning-layout-item>
+                                                </lightning-layout>
+
+                                                <lightning-layout horizontal-align="spread"
+                                                        class="slds-var-p-horizontal_medium">
+
+                                                        <lightning-layout-item>
+                                                                <template if:true={isSelectedModal}>
+                                                                        <lightning-layout>
+                                                                                <lightning-layout-item>
+                                                                                        <lightning-layout>
+                                                                                                <lightning-layout-item
+                                                                                                        class="slds-var-p-right_small slds-var-p-top_xx-small">
+                                                                                                        <div>
+                                                                                                                {commissionRateLabel}
+                                                                                                        </div>
+                                                                                                </lightning-layout-item>
+                                                                                                <lightning-layout-item>
+
+                                                                                                        <lightning-input
+                                                                                                                name="CommRate"
+                                                                                                                label="Comm rate"
+                                                                                                                class="roiInputs"
+                                                                                                                type="text"
+                                                                                                                variant=" label-hidden"
+                                                                                                                onblur={setCommissionRate}
+                                                                                                                value={commissionRate}>
+                                                                                                        </lightning-input>
+                                                                                                </lightning-layout-item>
+
+                                                                                        </lightning-layout>
+                                                                                </lightning-layout-item>
+                                                                                <lightning-layout-item>
+                                                                                        <lightning-layout>
+                                                                                                <lightning-layout-item
+                                                                                                        padding="horizontal-small"
+                                                                                                        class="slds-var-p-top_xx-small">
+                                                                                                        <div>
+                                                                                                                {agentSplitLabel}
+                                                                                                        </div>
+                                                                                                </lightning-layout-item>
+                                                                                                <lightning-layout-item>
+
+                                                                                                        <lightning-input
+                                                                                                                name="AgeSplit"
+                                                                                                                label="Agent Split"
+                                                                                                                class="roiInputs"
+                                                                                                                type="text"
+                                                                                                                onblur={setAgentSplit}
+                                                                                                                variant=" label-hidden"
+                                                                                                                value={agentSplit}>
+                                                                                                        </lightning-input>
+                                                                                                </lightning-layout-item>
+
+                                                                                        </lightning-layout>
+                                                                                </lightning-layout-item>
+
+                                                                                <lightning-layout-item>
+                                                                                        <lightning-layout>
+                                                                                                <lightning-layout-item
+                                                                                                        padding="horizontal-small"
+                                                                                                        class="slds-var-p-top_xx-small">
+                                                                                                        <div>
+                                                                                                                {conversionRateLabel}
+                                                                                                        </div>
+                                                                                                </lightning-layout-item>
+                                                                                                <lightning-layout-item>
+
+                                                                                                        <lightning-input
+                                                                                                                name="ConvRate"
+                                                                                                                label="Conv rate"
+                                                                                                                class="roiInputs"
+                                                                                                                type="text"
+                                                                                                                onblur={setConversionRate}
+                                                                                                                variant=" label-hidden"
+                                                                                                                value={conversionRate}>
+                                                                                                        </lightning-input>
+                                                                                                </lightning-layout-item>
+
+                                                                                        </lightning-layout>
+                                                                                </lightning-layout-item>
+                                                                                <lightning-layout-item>
+                                                                                        <lightning-layout>
+
+                                                                                                <lightning-layout-item
+                                                                                                        class="slds-var-p-left_small">
+
+                                                                                                        <lightning-input
+                                                                                                                name="sixPricing"
+                                                                                                                label={sixMonthPricingLabel}
+                                                                                                                type="checkbox"
+                                                                                                                onchange={set6MonthPricing}
+                                                                                                                checked={sixMonthPricing}
+                                                                                                                variant="label-hidden">
+                                                                                                        </lightning-input>
+                                                                                                </lightning-layout-item>
+                                                                                                <lightning-layout-item
+                                                                                                        class="slds-var-p-right_small">
+                                                                                                        <div>
+                                                                                                                {sixMonthPricingLabel}
+                                                                                                        </div>
+                                                                                                </lightning-layout-item>
+                                                                                        </lightning-layout>
+                                                                                </lightning-layout-item>
+                                                                                <lightning-layout-item>
+                                                                                        <lightning-layout>
+
+                                                                                                <lightning-layout-item>
+
+                                                                                                        <lightning-input
+                                                                                                                name="twelvePricing"
+                                                                                                                label={twelveMonthPricingLabel}
+                                                                                                                type="checkbox"
+                                                                                                                onchange={set12MonthPricing}
+                                                                                                                checked={twelveMonthPricing}
+                                                                                                                variant="label-hidden">
+                                                                                                        </lightning-input>
+                                                                                                </lightning-layout-item>
+                                                                                                <lightning-layout-item
+                                                                                                        class="slds-var-p-right_large">
+                                                                                                        <div>
+                                                                                                                {twelveMonthPricingLabel}
+                                                                                                        </div>
+                                                                                                </lightning-layout-item>
+                                                                                        </lightning-layout>
+                                                                                </lightning-layout-item>
+                                                                        </lightning-layout>
+                                                                </template>
+                                                        </lightning-layout-item>
+
+                                                        <lightning-layout-item>
+                                                                <lightning-layout>
+                                                                        <lightning-layout-item
+                                                                                class="slds-var-p-right_small slds-var-p-top_xx-small">
+                                                                                <div>
+                                                                                        {searchLabel}
+                                                                                </div>
+                                                                        </lightning-layout-item>
+                                                                        <lightning-layout-item>
+
+                                                                                <lightning-input name="Search"
+                                                                                        label="search"
+                                                                                        class="searchModal" type="text"
+                                                                                        variant=" label-hidden"
+                                                                                        onchange={handleSearch}
+                                                                                        value={searchValueForModal}>
+                                                                                </lightning-input>
+                                                                        </lightning-layout-item>
+
+                                                                </lightning-layout>
+                                                        </lightning-layout-item>
+                                                </lightning-layout>
+                                                <lightning-layout horizontal-align="spread"
+                                                        class="slds-var-p-horizontal_medium">
+                                                        <lightning-layout-item>
+                                                                <div
+                                                                        class="slds-float_left slds-var-p-top_small page-details">
+                                                                        Showing {firstRecordIndex} to
+                                                                        {lastRecordIndex} of {totalRecord} entries</div>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item>
+                                                                <div class="slds-button-group-row page-navigator">
+                                                                        <lightning-button-icon icon-name="utility:left"
+                                                                                variant="bare" alternative-text="First"
+                                                                                class="slds-var-m-left_xx-small slds-p-top_x-small"
+                                                                                title="First" onclick={handleFirst}
+                                                                                disabled={isFirstRecord}>
+                                                                        </lightning-button-icon>
+                                                                        <lightning-button-icon
+                                                                                icon-name="utility:chevronleft"
+                                                                                variant="bare"
+                                                                                alternative-text="Previous"
+                                                                                class="slds-var-m-left_xx-small slds-p-top_x-small"
+                                                                                title="Previous"
+                                                                                onclick={handlePrevious}
+                                                                                disabled={isFirstRecord}>
+                                                                        </lightning-button-icon>
+                                                                        <lightning-button variant="base"
+                                                                                label="Previous" title="Previous"
+                                                                                onclick={handlePrevious}
+                                                                                class="slds-var-m-left_x-small"
+                                                                                disabled={isFirstRecord}>
+                                                                        </lightning-button>
+                                                                        <lightning-button variant="base" label="Next"
+                                                                                title="Next" onclick={handleNext}
+                                                                                class="slds-var-m-left_x-small "
+                                                                                disabled={isLastRecord}>
+                                                                        </lightning-button>
+                                                                        <lightning-button-icon
+                                                                                icon-name="utility:chevronright"
+                                                                                variant="bare" alternative-text="Next"
+                                                                                class="slds-var-m-left_xx-small slds-p-top_x-small"
+                                                                                title="Next" onclick={handleNext}
+                                                                                disabled={isLastRecord}>
+                                                                        </lightning-button-icon>
+                                                                        <lightning-button-icon icon-name="utility:right"
+                                                                                variant="bare" alternative-text="Last"
+                                                                                class="slds-var-m-left_xx-small slds-p-top_x-small"
+                                                                                title="Last" onclick={handleLast}
+                                                                                disabled={isLastRecord}>
+                                                                        </lightning-button-icon>
+                                                                </div>
+                                                        </lightning-layout-item>
+                                                </lightning-layout>
+                                </header>
+                                <div class="slds-modal__content overflowModal">
+                                        <template if:true={showSpinnerModal}>
+                                                <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+                                        </template>
+                                        <div>
+                                                
+                                                <!-- </template> -->
+                                                <div>
+                                                      
+                                                        <div class="modalTable slds-box autoOverflow">
+                                                                <div class="slds-grid containerClass">
+                                                                        <div class="slds-col fixedPosition">
+                                                                                <c-l-m_-local-expert-custom-table
+                                                                                        class="datatable-colors datatable-fixed-column"
+                                                                                        key-field="id" data={marketData}
+                                                                                        columns={marketColumnData}
+                                                                                        onsort={handleSort}
+                                                                                        onmarketvalueupdate={handleMedianMarketValueChange}
+                                                                                        min-column-width="100"
+                                                                                        wrap-text-max-lines="3"
+                                                                                        sorted-direction={sortDirectionModal}
+                                                                                        sorted-by={sortByModal}
+                                                                                        hide-checkbox-column>
+                                                                                </c-l-m_-local-expert-custom-table>
+                                                                        </div>
+                                                                        <div class="slds-col">
+                                                                                <c-l-m_-local-expert-custom-table
+                                                                                        key-field="id"
+                                                                                        data={dataForModal}
+                                                                                        columns={columnDataModal}
+                                                                                        class="datatable-colors datatable-fixed-column"
+                                                                                        min-column-width="100"
+                                                                                        wrap-text-max-lines="3"
+                                                                                        hide-checkbox-column
+                                                                                        onsort={handleSort}
+                                                                                        onquantityupdate={handleQuantityUpdate}
+                                                                                        
+                                                                                        sorted-direction={sortDirectionModal}
+                                                                                        sorted-by={sortByModal}>
+                                                                                </c-l-m_-local-expert-custom-table>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                                
+                                        </div>
+
+                                </div>
+                                <header class="ratesheader">
+                                        <lightning-layout horizontal-align="spread"
+                                                        class="slds-var-p-horizontal_medium">
+                                                        <lightning-layout-item class="slds-var-p-bottom_small">
+                                                                <div
+                                                                        class="slds-float_left slds-var-p-top_x-small page-details">
+                                                                        Showing {firstRecordIndex} to
+                                                                        {lastRecordIndex} of {totalRecord} entries</div>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item class="slds-var-p-bottom_small">
+                                                                <div class="slds-button-group-row">
+                                                                        <lightning-button-icon icon-name="utility:left"
+                                                                                variant="bare" alternative-text="First"
+                                                                                class="slds-var-m-left_xx-small slds-p-top_x-small"
+                                                                                title="First" onclick={handleFirst}
+                                                                                disabled={isFirstRecord}>
+                                                                        </lightning-button-icon>
+                                                                        <lightning-button-icon
+                                                                                icon-name="utility:chevronleft"
+                                                                                variant="bare"
+                                                                                alternative-text="Previous"
+                                                                                class="slds-var-m-left_xx-small slds-p-top_x-small"
+                                                                                title="Previous"
+                                                                                onclick={handlePrevious}
+                                                                                disabled={isFirstRecord}>
+                                                                        </lightning-button-icon>
+                                                                        <lightning-button variant="base"
+                                                                                label="Previous" title="Previous"
+                                                                                onclick={handlePrevious}
+                                                                                class="slds-var-m-left_x-small"
+                                                                                disabled={isFirstRecord}>
+                                                                        </lightning-button>
+                                                                        <lightning-button variant="base" label="Next"
+                                                                                title="Next" onclick={handleNext}
+                                                                                class="slds-var-m-left_x-small "
+                                                                                disabled={isLastRecord}>
+                                                                        </lightning-button>
+                                                                        <lightning-button-icon
+                                                                                icon-name="utility:chevronright"
+                                                                                variant="bare" alternative-text="Next"
+                                                                                class="slds-var-m-left_xx-small slds-p-top_x-small"
+                                                                                title="Next" onclick={handleNext}
+                                                                                disabled={isLastRecord}>
+                                                                        </lightning-button-icon>
+                                                                        <lightning-button-icon icon-name="utility:right"
+                                                                                variant="bare" alternative-text="Last"
+                                                                                class="slds-var-m-left_xx-small slds-p-top_x-small"
+                                                                                title="Last" onclick={handleLast}
+                                                                                disabled={isLastRecord}>
+                                                                        </lightning-button-icon>
+                                                                </div>
+                                                        </lightning-layout-item>
+                                                </lightning-layout>
+                                        </header>
+                                <footer class="slds-modal__footer footerBorder">
+                                        <lightning-layout
+                                                class="slds-grid slds-grid_align-spread slds-grid_vertical-align-end">
+                                                <lightning-layout-item>
+                                                        <template if:true={isSelectedModal}>
+                                                                <div class="slds-text-align_left">
+                                                                        <p
+                                                                                class="ROIHeader slds-var-p-bottom_xxx-small ">
+                                                                                ROI Summary</p>
+                                                                        <div class="ROITable slds-box">
+                                                                                <c-l-m_-local-expert-custom-table
+                                                                                        key-field="id" data={dataForROI}
+                                                                                        columns={columnDataForROI}
+                                                                                        class="datatable-colors datatable-fixed-column "
+                                                                                        min-column-width="100"
+                                                                                        wrap-text-max-lines="3"
+                                                                                        hide-checkbox-column>
+                                                                                </c-l-m_-local-expert-custom-table>
+
+                                                                        </div>
+                                                                </div>
+                                                        </template>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                        <lightning-button class="saveButtonMargin" label="Save"
+                                                                variant="brand" title="Save" onclick={handleModalSave}>
+                                                        </lightning-button>
+                                                        <lightning-button onclick={handleModalClose} label="Cancel"
+                                                                title="Cancel">
+                                                        </lightning-button>
+                                                </lightning-layout-item>
+                                        </lightning-layout>
+                                </footer>
+                        </div>
+                </section>
+
+                <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!--Modal for Quick Quote starts-->
+        <section role="dialog" tabindex="0" onkeydown={handleKeyDown} onblur={handlemodalblur}
+                class="slds-modal slds-fade-in-open slds-modal_large outerModalContent modalSectionToFindFocus modalSectionToFindFocusQQ qq_modal"
+                aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2">
+                <div class="slds-modal__container modalClasses outerModalContent">
+                        <header class="slds-modal__header">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                        title="Close" onclick={handleQQModalClose}>
+                                        <lightning-icon icon-name="utility:close" alternative-text="close"
+                                                variant="inverse" size="small">
+                                        </lightning-icon>
+                                        <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Quick Quote
+                                </h2>
+                        </header>
+                        <div class="slds-modal__content modalBody">
+                                <template if:true={showSpinner}>
+                                        <lightning-spinner alternative-text="Loading" variant="brand">
+                                        </lightning-spinner>
+                                </template>
+                                <c-l-m_-quick-quote-component url={quickQuoteUrl} attributes-to-c-p-q={attributesToCPQ}>
+                                </c-l-m_-quick-quote-component>
+                        </div>
+                        <footer class="slds-modal__footer">
+                                <lightning-button onclick={handleQQModalClose} label="Done" title="Done"
+                                        variant="brand">
+                                </lightning-button>
+                        </footer>
+                </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open qq_modal"></div>
+        <!--Modal for Quick Quote END-->
+</template>

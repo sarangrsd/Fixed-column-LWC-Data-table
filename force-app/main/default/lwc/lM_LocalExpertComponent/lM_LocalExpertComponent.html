@@ -1,0 +1,152 @@
+<template>
+        <template if:true={showSpinner}>
+                <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+        </template>
+
+        <template if:false={skipAccount360}>
+        <template if:true={dataCheck}>
+                <lightning-card>
+                        <div>
+                                <lightning-layout horizontal-align="spread">
+                                        <lightning-layout-item padding="around-small" class="buttonAlignment">
+                                                <lightning-button class="showAll" variant="brand"
+                                                        label={showFullDetailLabel} onclick={handleShowAll}>
+                                                </lightning-button>
+                                                <lightning-button variant={buttonVariant} name="Expand"
+                                                        value={buttonExpand} label={buttonLabel} title={buttonLabel}
+                                                        onclick={handleExpand} class="expand">
+                                                </lightning-button>
+                                                <lightning-button variant="brand" name="Quick Quote"
+                                                        value={quickQuoteButtonLabel} label={quickQuoteButtonLabel} title={buttonLabel}
+                                                        onclick={openQuickQuote} class="expand">
+                                                </lightning-button>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item padding="around-small">
+                                                <legend class="slds-form-element__legend slds-form-element__label">
+                                                        {searchLabel}</legend>
+                                                <lightning-input name="Search" value={searchValue} type="text"
+                                                        variant="label-inline" class="search" onchange={handleSearch}>
+                                                </lightning-input>
+                                        </lightning-layout-item>
+                                </lightning-layout>
+                        </div>
+                        <div class="datatable slds-box">
+                                <c-l-m_-local-expert-custom-table key-field="id" data={data} columns={columnData}
+                                        onbuttonclick={handleButtonClick} class="datatable-colors"
+                                        min-column-width="100" onquantityupdate={handleQuantityUpdate}
+                                        wrap-text-max-lines="3" hide-checkbox-column>
+                                </c-l-m_-local-expert-custom-table>
+                        </div>
+                </lightning-card>
+        </template>
+
+        <template if:false={dataCheck}>
+                <div class="slds-align_absolute-center" style="height:3rem">
+                        <lightning-icon icon-name={iconname} size="x-small"></lightning-icon> &nbsp; {errorMessage}
+                </div>
+        </template>
+</template>
+
+        <template if:true={skipAccount360}>
+                <div class="slds-align_absolute-center" style="height:3rem">
+                    <lightning-icon icon-name={iconname} size="x-small"></lightning-icon> &nbsp; {skipAccount360msg}
+                </div>
+        </template>
+
+         <!--Modal for LE starts-->
+        <template if:true={displayInModal}>
+                <section role="dialog" tabindex="0" onkeydown={handleKeyDown}
+                        class="slds-modal slds-fade-in-open slds-modal_large outerModalContent modalSectionToFindFocus"
+                        aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+                        <div class="slds-modal__container modalClasses outerModalContent">
+                                <header class="slds-modal__header">
+                                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                                title="Close" onclick={handleModalClose}>
+                                                <lightning-icon icon-name="utility:close" alternative-text="close"
+                                                        variant="inverse" size="small">
+                                                </lightning-icon>
+                                                <span class="slds-assistive-text">Close</span>
+                                        </button>
+                                        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{modalHeader}
+                                        </h2>
+                                </header>
+                                <div class="slds-modal__content modalcontentLE">
+                                        <lightning-layout horizontal-align="spread">
+                                                <lightning-layout-item padding="around-small">
+
+                                                        <lightning-button variant={buttonVariantForModal} name="Expand"
+                                                                value={buttonExpand} label={buttonLabelForModal}
+                                                                title={buttonLabelForModal} onclick={handleExpand}
+                                                                class="expand">
+                                                        </lightning-button>
+
+                                                </lightning-layout-item>
+
+                                                <lightning-layout-item padding="around-small">
+                                                        <legend
+                                                                class="slds-form-element__legend slds-form-element__label">
+                                                                {searchLabel}</legend>
+                                                        <lightning-input name="Search" value={searchValueForModal}
+                                                                type="text" variant="label-inline" class="search"
+                                                                onchange={handleSearch}>
+                                                        </lightning-input>
+                                                </lightning-layout-item>
+                                        </lightning-layout>
+
+                                        <div class="modalTable">
+                                                <c-l-m_-local-expert-custom-table key-field="id" data={dataForModal}
+                                                        columns={columnData} onbuttonclick={handleButtonClick}
+                                                        onquantityupdate={handleQuantityUpdate} class="datatable-colors"
+                                                        min-column-width="100" wrap-text-max-lines="3"
+                                                        hide-checkbox-column>
+
+                                                </c-l-m_-local-expert-custom-table>
+                                        </div>
+                                </div>
+
+                                <footer class="slds-modal__footer">
+                                        <lightning-button class="saveButtonMargin" onclick={handleModalSave}
+                                                label="Save" variant="brand" title="Save"></lightning-button>
+                                        <lightning-button onclick={handleModalClose} label="Cancel" title="Cancel">
+                                        </lightning-button>
+                                </footer>
+                        </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+         <!--Modal for LE End-->
+
+        <!--Modal for Quick Quote starts-->
+        <!-- <template if:true={displayQQModal}> -->
+                <section role="dialog" tabindex="0" onkeydown={handleKeyDown} 
+                        class="slds-modal slds-fade-in-open slds-modal_large outerModalContent modalSectionToFindFocusQQ qq_modal"
+                        aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2">
+                        <div class="slds-modal__container modalClasses outerModalContent">
+                                <header class="slds-modal__header">
+                                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                                title="Close" onclick={handleQQModalClose}>
+                                                <lightning-icon icon-name="utility:close" alternative-text="close"
+                                                        variant="inverse" size="small">
+                                                </lightning-icon>
+                                                <span class="slds-assistive-text">Close</span>
+                                        </button>
+                                        <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Quick Quote
+                                        </h2>
+                                </header>
+                                <div class="slds-modal__content modalBody">
+                                        <template if:true={showSpinner}>
+                                                <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+                                        </template>
+                                        <c-l-m_-quick-quote-component   url={quickQuoteUrl} attributes-to-c-p-q={attributesToCPQ}>
+                                        </c-l-m_-quick-quote-component>
+                                </div>
+                                <footer class="slds-modal__footer">
+                                        <lightning-button onclick={handleQQModalClose} label="Done" title="Done" variant="brand">
+                                        </lightning-button>
+                                </footer>
+                        </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open qq_modal"></div>
+        <!-- </template> -->
+        <!--Modal for Quick Quote END-->
+</template>

@@ -1,0 +1,27 @@
+.height{
+    height:32px;
+}
+
+
+.adjustPadding{
+    padding: 9px;
+}
+
+
+
+.slds-input{
+    padding-right: 0px;
+    width: var(--width);
+    max-width: 150px;
+    text-align: center;
+}
+
+.connections{
+    padding-right: 0px;
+    width: 95%;
+    text-align: center;
+}
+
+.quantity{
+    padding-left: 1.65rem;
+}
