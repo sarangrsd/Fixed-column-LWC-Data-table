@@ -11,15 +11,15 @@ const dataFirstTable = [
     {id: 8, name: 'Robert Downy Jr.', email: 'ironman@starc.com'},
 ];
 const columnFirstTable = [
-    { label: 'Name', fieldName: 'name', fixedWidth: 200,type:'fc_CustomCell'},
-    { label: 'Email', fieldName: 'email', type: 'email',type:'fc_CustomCell', initialWidth: 200 }
+    { label: 'Name', type:'fc_CustomCell',initialWidth: 200, typeAttributes :{value : { fieldName: 'name' }}},
+    { label: 'Email', type:'fc_CustomCell', initialWidth: 200, typeAttributes :{value : { fieldName: 'email' }} }
 ];
 
 const dataSecondTable = [
     { id: 1, age: 40,address: '107, Parkland avenue,near Mayfair Hotel,across Newlane street, London - 4521452'},
     { id: 2, age: 35,address: '107, Parkland avenue,near Mayfair Hotel,across Newlane street, London - 4521452' },
     { id: 3,age: 50,address: '107, Parkland avenue,near Mayfair Hotel,across Newlane street, London - 4521452' },
-    { id: 4,age: 37,address:         '107, Parkland avenue,near Mayfair Hotel,across Newlane street, London - 4521452'},
+    { id: 4,age: 37,address:  '107, Parkland avenue,near Mayfair Hotel,across Newlane street, London - 4521452'},
     { id: 5, age: 40,address: '107, Parkland avenue,near Mayfair Hotel,across Newlane street, London - 4521452'},
     { id: 6, age: 35,address: '107, Parkland avenue,near Mayfair Hotel,across Newlane street, London - 4521452' },
     { id: 7,age: 50,address: '107, Parkland avenue,near Mayfair Hotel,across Newlane street, London - 4521452' },

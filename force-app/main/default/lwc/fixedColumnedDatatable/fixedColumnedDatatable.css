@@ -12,6 +12,6 @@
 .containerClass{
     display:inline-flex;
 }
-.minimumHeight{
-    min-height: 4rem;
+.heightLimit{
+    max-height: 20rem;;
 }

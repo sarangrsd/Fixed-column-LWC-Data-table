@@ -5,7 +5,7 @@ export default class Fc_CustomDatatable extends LightningDatatable  {
     static customTypes = {
         fc_CustomCell: {
             template: fc_CustomCell,
-            typeAttributes: ['value','minimumHeight'],
+            typeAttributes: ['value'],
         }
     }
 }

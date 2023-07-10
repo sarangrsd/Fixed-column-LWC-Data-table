@@ -1,3 +1,5 @@
 .minimumHeight{
-    height: 4.1rem;
+    min-height: 3.7rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
 }
